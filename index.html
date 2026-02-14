@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#00F0FF" />
+    <meta name="description" content="Ankit Chaubey - Professional Developer & Creator. Showcasing innovative projects, skills, and expertise in modern web development." />
+    
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="AC Portfolio" />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Ankit Chaubey - Developer Portfolio" />
+    <meta property="og:description" content="Professional portfolio showcasing development work and expertise" />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content="Ankit Chaubey - Developer Portfolio" />
+    <meta property="twitter:description" content="Professional portfolio showcasing development work and expertise" />
+    <meta property="twitter:image" content="/og-image.png" />
+    
+    <!-- Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    
+    <title>Ankit Chaubey | Portfolio Mini App</title>
+    
+    <style>
+      /* Critical CSS for initial load */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      html, body, #root {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+      
+      body {
+        background: linear-gradient(135deg, #050816 0%, #0A0E27 50%, #050816 100%);
+        background-attachment: fixed;
+        color: #ffffff;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overscroll-behavior: none;
+      }
+      
+      /* Loading Screen */
+      .loading-screen {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #050816 0%, #0A0E27 50%, #050816 100%);
+        z-index: 9999;
+        transition: opacity 0.5s ease, visibility 0.5s ease;
+      }
+      
+      .loading-screen.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      
+      .loading-logo {
+        font-size: 3rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #00F0FF, #B026FF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 2rem;
+        animation: pulse 2s ease-in-out infinite;
+      }
+      
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(0, 240, 255, 0.1);
+        border-top-color: #00F0FF;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+      
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+      
+      @keyframes pulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.05); }
+      }
+      
+      /* Prevent zoom on iOS */
+      @media (max-width: 768px) {
+        input, select, textarea {
+          font-size: 16px !important;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/assets/index-DZM8L3ko.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-DIVuUcjD.js">
+    <link rel="modulepreload" crossorigin href="/assets/animation-vendor-xUd00zX1.js">
+    <link rel="modulepreload" crossorigin href="/assets/three-vendor-yP3wcYHW.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-PiSrDPaL.css">
+  <link rel="manifest" href="/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/registerSW.js"></script></head>
+  <body>
+    <div id="root"></div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading-screen">
+      <div class="loading-logo">AC</div>
+      <div class="loading-spinner"></div>
+    </div>
+    
+    
+    <script>
+      // Initialize Telegram Web App
+      if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        
+        // Expand to full height
+        tg.expand();
+        
+        // Enable closing confirmation
+        tg.enableClosingConfirmation();
+        
+        // Set header color
+        tg.setHeaderColor('#050816');
+        tg.setBackgroundColor('#050816');
+        
+        // Ready
+        tg.ready();
+      }
+      
+      // Hide loading screen when app loads
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          const loadingScreen = document.getElementById('loading-screen');
+          if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+          }
+        }, 1500);
+      });
+      
+      // Prevent pull-to-refresh
+      let lastTouchY = 0;
+      let preventPullToRefresh = false;
+      
+      document.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) { return; }
+        lastTouchY = e.touches[0].clientY;
+        preventPullToRefresh = window.pageYOffset === 0;
+      }, { passive: false });
+      
+      document.addEventListener('touchmove', (e) => {
+        const touchY = e.touches[0].clientY;
+        const touchYDelta = touchY - lastTouchY;
+        lastTouchY = touchY;
+        
+        if (preventPullToRefresh) {
+          preventPullToRefresh = false;
+          if (touchYDelta > 0) {
+            e.preventDefault();
+            return;
+          }
+        }
+      }, { passive: false });
+    </script>
+  </body>
+</html>
